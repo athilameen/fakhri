@@ -15,11 +15,10 @@ const nextConfig = {
                   {
                     type: 'cookie',
                     key: 'ITSOUTJWT',
-                    value: '',
                   },
                 ],
-                permanent: false,
-                destination: '/user',
+                permanent: true,
+                destination: '/profile',
             },
         ]
     }
