@@ -1,7 +1,7 @@
 import { COOKIE_NAME } from "@/constants";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import  NextResponse  from "next/server";
 
 export async function GET() {
  
@@ -25,10 +25,12 @@ export async function GET() {
   const secret = process.env.JWT_SECRET || "";
 
   try {
-    verify(value, secret);
+    
+    const payload = verify(value, secret);
 
     const response = {
-      user: "Super Top Secret User",
+      userItsId: payload.itsId,
+      message: 'User Logged Successfully',
     };
 
     return new Response(JSON.stringify(response), {

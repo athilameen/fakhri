@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import mysqlDb from "@/lib/mysqldb";
 
+
 export async function GET(){
+
+
 
     // try {
     //     const [userData] = await mysqlDb.execute("SELECT id_user, email, its_id FROM fpa_user WHERE its_id=203899501 ");

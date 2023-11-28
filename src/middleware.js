@@ -5,33 +5,29 @@ export async function middleware(req) {
   // console.log(request.method);
   // console.log(request.url);
 
-  const cookie = req.cookies.get(COOKIE_NAME);
-  if (cookie) {
-    if (
-      cookie.value &&
-      (req.nextUrl.pathname.startsWith("/user") ||
-        req.nextUrl.pathname.startsWith("/professional") ||
-        req.nextUrl.pathname.startsWith("/achievement") ||
-        req.nextUrl.pathname.startsWith("/user/maulana"))
-    ) {
-      return NextResponse.next();
+  const pathname = req.nextUrl.pathname;
+  const protectedPaths = [
+    "/profile",
+    "/user",
+    "/user/professional",
+    "/user/achievement",
+    "/user/maulana",
+    "/directory",
+    "/about",
+    "/event",
+    "/careervideos",
+    "/videos",
+    "/contact",
+  ];
+  const isPathProtected = protectedPaths?.some((path) => pathname == path);
+  const res = NextResponse.next();
+  if (isPathProtected) {
+    const cookie = req.cookies.get(COOKIE_NAME);
+    if (!cookie) {
+      const url = new URL(`/`, req.url);
+      //url.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(new URL("/", req.url));
     }
-
-    // if (
-    //   cookie.value && req.nextUrl.pathname.startsWith("/")
-    // ) {
-    //   //return NextResponse.next();
-    //   return NextResponse.redirect(new URL('/user', req.url))
-   // }
-
   }
-
-  
-  //return NextResponse.next();
-  return NextResponse.redirect(new URL('/', req.url))
+  return res;
 }
-
-export const config = {
-  //matcher: "/",
-  matcher: "/user/:path*",
-};

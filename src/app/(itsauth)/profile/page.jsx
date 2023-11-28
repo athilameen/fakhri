@@ -1,13 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import AuthHeader from "@/components/AuthHeader";
-import Footer from "@/components/Footer";
 import ProfileHeader from "@/components/ProfileHeader";
+import { useSelector } from "react-redux";
+
+function ITSUser() {
+  const userItdId = useSelector((state) => state.user.value.itsId);
+  return userItdId;
+}
 
 export default function ProfilePage() {
+
+  const getItsId = ITSUser();
+
   return (
-    <>
-      <AuthHeader />
+    <> <p>{getItsId}</p>
       <ProfileHeader page="profile" />
       <form id="form-profile">
         <div className="col-md-12 pt-7">
@@ -29,18 +37,12 @@ export default function ProfilePage() {
                     width: "155px",
                   }}
                 >
-                  <Link
-                    href="/user/profile-picture"
-                    className="btn btn-primary btn-xs"
-                  >
+                  <a className="btn btn-primary btn-xs">
                     <i className="fa fa-pencil" aria-hidden="true"></i> Change
-                  </Link>
-                  <Link
-                    href="?remove-picture=1"
-                    className="btn btn-primary btn-xs"
-                  >
+                  </a>
+                  <a className="btn btn-primary btn-xs">
                     <i className="fa fa-trash" aria-hidden="true"></i> Delete
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -148,7 +150,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </form>
-      <Footer />
     </>
   );
 }

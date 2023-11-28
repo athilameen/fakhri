@@ -2,36 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../features/user";
 
 export default function AuthHeader() {
-  const dispatch = useDispatch();
-  const userAuthLogout = useSelector((state) => state.user.logoutValue);
-
-  const [logoutMsg, setLogoutMsg] = useState();
-
-  if (logoutMsg) {
-    window.location.href = "/";
-  }
-
-  useEffect(() => {
-    if (userAuthLogout.log) {
-      fetch("/api/auth/logout")
-        .then((res) => res.json())
-        .then((data) => {
-          setLogoutMsg(data);
-        });
-    }
-  }, [userAuthLogout.log]);
 
   function logoutHandler() {
-    dispatch(
-      logout({
-        log: true,
-      })
-    );
+    fetch("/api/auth/logout")
+        .then((res) => res.json())
+        .then((data) => {
+          //console.log(data);
+          window.location.href = '/';
+    });
   }
 
   return (
@@ -96,4 +76,5 @@ export default function AuthHeader() {
       </div>
     </header>
   );
+
 }
