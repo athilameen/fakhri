@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { ReduxProvider } from "./Provider";
 
 import "./globals.css";
@@ -11,13 +11,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
   return (
     <html lang="en">
       <body>
-      <ReduxProvider>
-        {children}
-      </ReduxProvider>
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

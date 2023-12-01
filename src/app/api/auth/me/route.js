@@ -1,9 +1,9 @@
 import { COOKIE_NAME } from "@/constants";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import  NextResponse  from "next/server";
+import  { NextResponse }  from "next/server";
 
-export async function GET() {
+export async function GET(request) {
  
   const cookieStore = cookies();
   const token = cookieStore.get(COOKIE_NAME);
@@ -36,14 +36,14 @@ export async function GET() {
     return new Response(JSON.stringify(response), {
       status: 200,
     });
+
   } catch (e) {
-    return NextResponse.json(
-      {
-        message: "Something went wrong",
-      },
-      {
-        status: 400,
-      }
-    );
+    
+      //for web
+      return NextResponse.redirect(new URL('/', request.url));
+
+      //for Api
+      //return NextResponse.json({ error: 'Something went wrong' }, { status: 400 })
+
   }
 }

@@ -1,18 +1,18 @@
 import Image from "next/image";
 
-const Loading = () => {
+const ProfileLoading = () => {
   return (
-    <div className=" flex min-h-screen justify-center">Ï
+    <div className=" flex min-h-[300px] justify-center">Ï
         <Image
-          src="/loading.svg"
+          src="/mini-lodaing.svg"
           alt="Loading"
           width={100}
           height={100}
-          priority='low'
           style={{width: "auto"}}
+          priority='low'
         />
     </div>
   )
 }
 
-export default Loading
+export default ProfileLoading
