@@ -54,9 +54,7 @@ export async function GET(req, { params }) {
       WHERE user.id_user=${id_user}`
     );
 
-    return NextResponse.json({ message: "User Data", data: userData[0]}, { status: 200 })
-
-    /*if (userData[0]) {
+    if (userData[0]) {
       return NextResponse.json(
         { message: "User data found", data: userData[0] },
         { status: 200 }
@@ -66,7 +64,7 @@ export async function GET(req, { params }) {
         { message: "User data not Found!", data: '' },
         { status: 404 }
       );
-    }*/
+    }
 
   } catch (error) {
     return NextResponse.json(
