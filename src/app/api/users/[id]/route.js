@@ -67,7 +67,7 @@ export async function GET(req, { params }) {
     }
   } catch (error) {
     return NextResponse.json(
-      { message: "Something wrong while fetch the user data!" },
+      { message: "Something wrong while fetch the user data!!" },
       { status: 500 }
     );
   }
