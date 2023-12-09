@@ -2,11 +2,26 @@
  
 import { usePathname } from 'next/navigation'
 import ProfileHeader from "@/components/ProfileHeader";
+import { useSelector } from "react-redux";
+
+function IsUserProfessional() {
+  const isProfessional = useSelector((state) => state.user.professional.isProfessional);
+  return isProfessional;
+}
 
 export default function UserTemplate({ children }) {
 
+    const getIsUserProfessional = IsUserProfessional();
+    // console.log(getIsUserProfessional);
+
+    // if(!getIsUserProfessional){
+    //   window.location.href = '/profile';
+    //   return;
+    // }
+
     const pathname = usePathname();
-    const page = (pathname === '/user') ? 'profile' : pathname.replace('/user/', '');
+    const getPage = (pathname === '/user') ? 'profile' : pathname;
+    const page = getPage.replace('/user/', '');
 
   return (
     <>

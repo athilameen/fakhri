@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const ProfileLoading = () => {
   return (
-    <div className=" flex min-h-[300px] justify-center">Ï
+    <div className=" flex min-h-[300px] justify-center">
         <Image
           src="/mini-lodaing.svg"
           alt="Loading"

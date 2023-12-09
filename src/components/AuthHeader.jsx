@@ -18,7 +18,7 @@ export default function AuthHeader() {
     <header>
       <div className="container">
         <div className="row">
-          <div className="fakhri-header flex">
+          <div className="fakhri-header lg:flex">
             <div className="col-lg-3 col-md-3 col-sm-4 col-xs-12 fakhri-logo-section">
               <h1>
                 <Link href="/">

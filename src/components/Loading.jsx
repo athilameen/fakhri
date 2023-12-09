@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Loading = () => {
   return (
-    <div className=" flex min-h-screen justify-center">Ï
+    <div className=" flex min-h-screen justify-center">
         <Image
           src="/loading.svg"
           alt="Loading"

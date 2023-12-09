@@ -27,7 +27,7 @@ export async function GET(request) {
   try {
     
     const payload = verify(value, secret);
-
+    
     const response = {
       userItsId: payload.itsId,
       message: 'User Logged Successfully',

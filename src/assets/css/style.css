@@ -2523,6 +2523,18 @@ html {
 	margin-top: 1px \9;
 	line-height: normal;
   }
+
+  .privacySettings input{
+	margin: 5px 8px 0 0;
+  }
+
+  #professional label {
+    margin-right: 8px;
+  }
+
+  #professional input[type="radio"]{
+    margin: 4px 4px 0 0;
+  }
   input[type="file"] {
 	display: block;
   }
@@ -7226,7 +7238,7 @@ main{float:left; width:100%; position:relative; min-height:350px;}
 .field-off_tel{ width:75%; display:inline-block;}
 
 .field-mobile_code{ width:20%; display:inline-block;}
-.field-mobile{ width:75%; display:inline-block;}
+.field-mobile{ width:75%; margin-left: 5%; display:inline-block;}
 
 .field-res_tel_code{ width:20%; display:inline-block;}
 .field-res_tel{ width:75%; display:inline-block;}
