@@ -5,6 +5,8 @@ import { FaPlusCircle } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
+import { UploadButton, UploadDropzone, Uploader } from "@/lib/uploadthing";
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -30,7 +32,9 @@ import NotificationMessage from "@/components/NotificationMessage";
 
 function ITSUser() {
   const getItsId = useSelector((state) => state.user.value.itsId);
-  const isProfessional = useSelector((state) => state.user.professional.isProfessional);
+  const isProfessional = useSelector(
+    (state) => state.user.professional.isProfessional
+  );
   return [getItsId, isProfessional];
 }
 
@@ -69,7 +73,6 @@ const schema = yup.object().shape({
 export default function ProfilePage() {
 
   const profileNotificationMsg = IsProfileNotification();
-
   const [areProfessional, setAreProfessional] = useState();
   const [emailPrivacy, setEmailPrivacy] = useState(false);
   const [mobilePrivacy, setMobilePrivacy] = useState(false);
@@ -81,7 +84,7 @@ export default function ProfilePage() {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedFile, setSelectedFile] = useState();
-  const [profileImage, setProfileImage] = useState("profile-picture.jpeg");
+  const [profileImage, setProfileImage] = useState('/user_img/profile-picture.jpeg');
 
   const [getItsId, isProfessional] = ITSUser();
 
@@ -93,8 +96,8 @@ export default function ProfilePage() {
     dispatch(
       profileForm({
         notification: {
-          success: '',
-          error: '',
+          success: "",
+          error: "",
         },
       })
     );
@@ -133,7 +136,7 @@ export default function ProfilePage() {
     queryFn: ({ signal }) => fetchUserProfile({ signal, its_id: getItsId }),
     enabled: !fetchItsId,
     staleTime: 100,
-    gcTime:  100,
+    gcTime: 100,
   });
 
   const {
@@ -142,17 +145,16 @@ export default function ProfilePage() {
     data: userUpdate,
   } = useMutation({
     mutationFn: async (profileData) => updateUserProfile(profileData),
-    onSuccess: ({data}) => {
-      
+    onSuccess: ({ data }) => {
       queryClient.invalidateQueries(["userProfile", getItsId]);
 
       dispatch(
         professional({
-          isProfessional: data?.professional
+          isProfessional: data?.professional,
         })
       );
 
-      if(data?.professional === '1'){
+      if (data?.professional === "1") {
         dispatch(
           profileForm({
             form: "Success",
@@ -163,13 +165,12 @@ export default function ProfilePage() {
         dispatch(
           profileForm({
             notification: {
-              success: data.message
-            }
+              success: data.message,
+            },
           })
         );
-       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       }
-      
     },
     onError: () => {
       console.log("error");
@@ -267,7 +268,6 @@ export default function ProfilePage() {
   if (userDataError) return <ProfileError>{userDataErrorMessage}</ProfileError>;
 
   if (userProfileData) {
-
     const {
       id_user,
       email,
@@ -297,8 +297,7 @@ export default function ProfilePage() {
     } = userProfileData;
 
     if (fetchItsId === undefined) {
-      
-      console.log('run');
+      console.log("run");
       setFetchItsId(its_id);
 
       if (image) {
@@ -328,10 +327,27 @@ export default function ProfilePage() {
       }
     }
 
+    console.log(selectedImage);
+
     return (
       <>
-        {isProfessional === '' ? (professional === 0 ? <div className="col-md-12"><h3>Profile</h3></div> : <ProfileHeader page="profile" /> ) : (isProfessional === '0' ? <div className="col-md-12"><h3>Profile</h3></div> : <ProfileHeader page="profile" /> ) }
+        {isProfessional === "" ? (
+          professional === 0 ? (
+            <div className="col-md-12">
+              <h3>Profile</h3>
+            </div>
+          ) : (
+            <ProfileHeader page="profile" />
+          )
+        ) : isProfessional === "0" ? (
+          <div className="col-md-12">
+            <h3>Profile</h3>
+          </div>
+        ) : (
+          <ProfileHeader page="profile" />
+        )}
         {notificationMessage}
+
         <form
           id="form-profile"
           onSubmit={handleSubmit((profileData) => {
@@ -346,16 +362,20 @@ export default function ProfilePage() {
                     <div id="profileChange">
                       <Image
                         className="p-3"
-                        src={`/user_img/${profileImage}`}
+                        src={profileImage}
                         alt="Profile"
                         width={140}
                         height={152}
-                        fill={false}
+                        quality={75}
+                        priority
                       />
 
                       <div className="flex justify-center absolute bottom-6 left-0 right-0 ">
-                        {profileImage === "profile-picture.jpeg" ? (
-                          <button onClick={handleChangeProfile} className=" !flex items-center btn btn-primary btn-xs mx-auto">
+                        {profileImage === "/user_img/profile-picture.jpeg" ? (
+                          <button
+                            onClick={handleChangeProfile}
+                            className=" !flex items-center btn btn-primary btn-xs mx-auto"
+                          >
                             <FaPlusCircle className=" mr-1" /> Add
                           </button>
                         ) : (
@@ -380,64 +400,34 @@ export default function ProfilePage() {
                     </div>
                   ) : (
                     <div id="profileUpload" className=" w-full h-full">
-                      {selectedImage ? (
-                        <div className=" relative h-full">
-                          <Image
-                            className=" mx-auto p-3"
-                            src={selectedImage}
-                            alt="Profile"
-                            fill={false}
-                            width={140}
-                            height={152}
-                          />
-                          <button
-                            onClick={handleUpload}
-                            disabled={uploading || uploadSuccess}
-                            style={{
-                              opacity: uploading || uploadSuccess ? ".5" : "1",
-                            }}
-                            className=" absolute z-10 bottom-8 left-0 right-0 mx-auto bg-[#3989c1] p-3 w-32 text-center rounded text-white"
-                          >
-                            {uploading ? "Uploading.." : "Upload"}
-                          </button>
-                        </div>
-                      ) : (
-                        <div className=" flex items-center justify-center mx-auto h-full text-5xl text-[#caccd2]">
-                          <div>
-                            <IoCloudUploadOutline className=" mx-auto text-5xl text-[#caccd2]" />
-                            <p className=" pt-2 text-2xl text-[#caccd2]">
-                              Upload Image
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      <input
-                        className=" absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
-                        type="file"
-                        name="upload_pic"
-                        accept=".png, .jpg, .jpeg"
-                        onChange={({ target }) => {
-                          if (target.files && target.files[0]) {
-                            if (target.files[0].size > 2 * 1000 * 1024) {
-                              dispatch(
-                                profileForm({
-                                  notification: {
-                                    error:
-                                      "File with maximum size of 2MB is allowed",
-                                  },
-                                })
-                              );
-                              setUploadSuccess(true);
-                            } else {
-                              setUploadSuccess(false);
-                            }
-                            const file = target.files[0];
-                            setSelectedImage(URL.createObjectURL(file));
-                            setSelectedFile(file);
-                          }
-                        }}
-                      />
+                      <div className=" flex items-center justify-center mx-auto h-full text-5xl text-[#caccd2]">
+                        <UploadButton
+                          endpoint="profilePicture"
+                          onClientUploadComplete={(res) => {
+                            setProfileImage(res[0].url);
+                            console.log("Files: ", res);
+                            dispatch(
+                              profileForm({
+                                notification: {
+                                  success:
+                                    "Profile picture updated successfully",
+                                },
+                              })
+                            );
+                            setUploadSuccess(true);
+                          }}
+                          onUploadError={(error) => {
+                            dispatch(
+                              profileForm({
+                                notification: {
+                                  error: error.message,
+                                },
+                              })
+                            );
+                            setUploadSuccess(false);
+                          }}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -521,11 +511,12 @@ export default function ProfilePage() {
                         {...register("jamaat")}
                       >
                         <option value="">Select Jamaat</option>
-                        {cityList && cityList.map((city) => (
-                          <option key={city.id_city} value={city.id_city}>
-                            {city.name}
-                          </option>
-                        ))}
+                        {cityList &&
+                          cityList.map((city) => (
+                            <option key={city.id_city} value={city.id_city}>
+                              {city.name}
+                            </option>
+                          ))}
                       </select>
                       <div className="help-block">
                         {errors?.jamaat?.message}
@@ -552,14 +543,15 @@ export default function ProfilePage() {
                         {...register("jamiaat")}
                       >
                         <option value="">Select Jamiaat</option>
-                        {countryList && countryList.map((country) => (
-                          <option
-                            key={country.id_country}
-                            value={country.id_country}
-                          >
-                            {country.name}
-                          </option>
-                        ))}
+                        {countryList &&
+                          countryList.map((country) => (
+                            <option
+                              key={country.id_country}
+                              value={country.id_country}
+                            >
+                              {country.name}
+                            </option>
+                          ))}
                       </select>
                       <div className="help-block">
                         {errors?.jamiaat?.message}
@@ -954,5 +946,4 @@ export default function ProfilePage() {
       </>
     );
   }
-
 }

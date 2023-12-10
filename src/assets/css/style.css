@@ -6829,6 +6829,39 @@ a:hover{ color:#333; text-decoration:none;}
 
 .noBorder a::after{ display: none; }
 
+#profileUpload > div > div{
+	width: 100%;
+    height: 100%;
+	outline: 0;
+	border: 0;
+	box-shadow: none;
+}
+
+#profileUpload > div > div label{
+	width: 100%;
+    height: 100%;
+    margin: 0;
+    background: transparent;
+    color: #caccd2;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: normal;
+}
+
+#profileUpload > div > div label::after{
+	background: transparent;
+}
+
+#profileUpload > div > div label .text-white{
+	color: #caccd2;
+	width: 25px;
+	height: 25px;
+}
+
+#profileUpload > div > div > div{
+	display: none;
+}
+
 /* header section */
 p{color:#353535;}
 main{float:left; width:100%; position:relative; min-height:350px;}
